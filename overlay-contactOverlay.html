@@ -1,0 +1,73 @@
+<div class="overlay" id="contactOverlay">
+<button class="overlay-close" data-close="contactOverlay">
+<svg fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 14 14">
+<line x1="1" x2="13" y1="1" y2="13"></line>
+<line x1="13" x2="1" y1="1" y2="13"></line>
+</svg>
+            Close
+        </button>
+<div class="overlay-content">
+<div class="overlay-header">
+<h1 class="overlay-title">Get in <em>Touch</em></h1>
+<p class="overlay-subtitle">
+                    Interested in our research or collaboration opportunities? 
+                    We'd love to hear from you.
+                </p>
+</div>
+<div class="overlay-grid">
+<div class="contact-info">
+<div class="contact-block">
+<h3>Email</h3>
+<p>
+<a href="mail:kiwoong">kiwoong@cbnu.ac.kr</a>
+</p>
+</div>
+<div class="contact-block">
+<h3>Tel.</h3>
+<p>
+<a href="tel:+82-43-261-2269">+82 043-261-2277</a>
+</p>
+</div>
+<div class="contact-block">
+<h3>Location</h3>
+<address>
+<a href="https://maps.google.com/maps?q=Chungbuk+National+University" rel="noopener" target="_blank">
+                                Room 249, Building S1-1<br/>
+                                College of Natural Sciences<br/>
+                                Chungbuk National University<br/>
+                                1, Chungdae-ro, Seowon-gu<br/>
+                                Cheongju-si, Chungbuk 28644<br/>
+                                South Korea
+                            </a>
+</address>
+</div>
+<!--div class="contact-block">
+                        <h3>Follow Us</h3>
+                        <div class="contact-social">
+                            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+                            <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div-->
+</div>
+<form class="contact-form" id="contactForm" onsubmit="sendMail(event)">
+<div class="form-group">
+<label for="name">Name</label>
+<input id="name" name="name" placeholder="Your name" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="email">Email</label>
+<input id="email" name="email" placeholder="your@email.com" required="" type="email"/>
+</div>
+<div class="form-group">
+<label for="subject">Subject</label>
+<input id="subject" name="subject" placeholder="Research inquiry, Collaboration, etc." type="text"/>
+</div>
+<div class="form-group">
+<label for="message">Message</label>
+<textarea id="message" name="message" placeholder="Tell us about your inquiry..." required=""></textarea>
+</div>
+<button class="form-submit" type="submit">Send Message</button>
+</form>
+</div>
+</div>
+</div>
