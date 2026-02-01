@@ -66,3 +66,44 @@
 @media (max-width:480px){
   .carousel-slide{flex:0 0 100%;min-width:100%}
 }
+
+
+/* 태블릿 이하: 교수 헤더(사진+텍스트) 세로 정렬 + 2컬럼 → 1컬럼 */
+@media (max-width: 1024px){
+  .professor-header{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .professor-photo{
+    width: 160px;
+    height: 160px;
+  }
+
+  /* 교수 페이지 본문 2단 → 1단 */
+  .overlay-grid{
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* 모바일: 여백/타이포 조금 더 컴팩트 */
+@media (max-width: 640px){
+  .overlay-content{
+    padding: 7rem 1.25rem 3rem;
+  }
+
+  .overlay-title{
+    font-size: clamp(2.25rem, 10vw, 3.75rem);
+  }
+
+  .overlay-subtitle{
+    font-size: 1rem;
+  }
+
+  .professor-photo{
+    width: 140px;
+    height: 140px;
+  }
+}
