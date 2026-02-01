@@ -82,6 +82,8 @@
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
+                background-color: #000;   /* ← 블랙 배경 */
+
             }
 
             nav a, nav button {
