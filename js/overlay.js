@@ -1,63 +1,76 @@
 // overlay.js
-document.addEventListener('DOMContentLoaded', () => {
-    // Overlay System
-            const overlays = document.querySelectorAll('.overlay');
-            const overlayTriggers = document.querySelectorAll('[data-overlay]');
-            const overlayCloseButtons = document.querySelectorAll('.overlay-close');
+// Overlay open/close with event delegation so it works for dynamically injected overlays.
 
-            function openOverlay(overlayId) {
-                const overlay = document.getElementById(overlayId);
-                if (overlay) {
-                    overlay.classList.add('active');
-                    document.body.classList.add('no-scroll');
-                }
-            }
+(function () {
+  function getActiveOverlays() {
+    return Array.from(document.querySelectorAll('.overlay.active'));
+  }
 
-            function closeOverlay(overlayId) {
-                const overlay = document.getElementById(overlayId);
-                if (overlay) {
-                    overlay.classList.remove('active');
-                    document.body.classList.remove('no-scroll');
-                }
-            }
+  function updateBodyScrollLock() {
+    const anyOpen = getActiveOverlays().length > 0;
+    document.body.classList.toggle('no-scroll', anyOpen);
+  }
 
-            function closeAllOverlays() {
-                overlays.forEach(overlay => {
-                    overlay.classList.remove('active');
-                });
-                document.body.classList.remove('no-scroll');
-            }
+  function openOverlay(overlayId) {
+    const overlay = document.getElementById(overlayId);
+    if (!overlay) return;
+    overlay.classList.add('active');
+    updateBodyScrollLock();
+  }
 
-            // Trigger buttons
-            overlayTriggers.forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const overlayId = trigger.getAttribute('data-overlay');
-                    openOverlay(overlayId);
-                });
-            });
+  function closeOverlay(overlayId) {
+    const overlay = document.getElementById(overlayId);
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    updateBodyScrollLock();
+  }
 
-            // Close buttons
-            overlayCloseButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const overlayId = btn.getAttribute('data-close');
-                    closeOverlay(overlayId);
-                });
-            });
+  function closeAllOverlays() {
+    getActiveOverlays().forEach((o) => o.classList.remove('active'));
+    updateBodyScrollLock();
+  }
 
-            // Close on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeAllOverlays();
-                }
-            });
+  function initOverlay() {
+    // Bind once.
+    if (document.documentElement.dataset.overlayBound === '1') return;
+    document.documentElement.dataset.overlayBound = '1';
 
-            // Close when clicking overlay background
-            overlays.forEach(overlay => {
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        closeAllOverlays();
-                    }
-                });
-            });
-});
+    // Open triggers: <a data-overlay="someOverlayId">
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-overlay]');
+      if (!trigger) return;
+      const overlayId = trigger.getAttribute('data-overlay');
+      if (!overlayId) return;
+      e.preventDefault();
+      openOverlay(overlayId);
+    });
+
+    // Close buttons: <button class="overlay-close" data-close="someOverlayId">
+    document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('[data-close]');
+      if (!closeBtn) return;
+      const overlayId = closeBtn.getAttribute('data-close');
+      if (!overlayId) return;
+      e.preventDefault();
+      closeOverlay(overlayId);
+    });
+
+    // Close when clicking overlay background.
+    document.addEventListener('click', (e) => {
+      const overlay = e.target.classList?.contains('overlay') ? e.target : null;
+      if (!overlay) return;
+      // Only close if click is on background (not inside content)
+      if (e.target === overlay) closeAllOverlays();
+    });
+
+    // Close on Escape.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAllOverlays();
+    });
+  }
+
+  // Expose for main.js
+  window.initOverlay = initOverlay;
+  // Expose helpers for optional use
+  window.__overlay = { openOverlay, closeOverlay, closeAllOverlays };
+})();

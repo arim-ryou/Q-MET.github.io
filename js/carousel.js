@@ -1,38 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Carousel - Clone slides for infinite loop
-            document.querySelectorAll('.activity-carousel').forEach(carousel => {
-                const track = carousel.querySelector('.carousel-track');
-                const slides = track.querySelectorAll('.carousel-slide');
+// carousel.js
+// Activity carousel + (optional) mailto contact helper.
 
-                // Clone all slides and append to track for seamless infinite scroll
-                slides.forEach(slide => {
-                    const clone = slide.cloneNode(true);
-                    track.appendChild(clone);
-                });
-            });
+(function () {
+  function initCarousel() {
+    document.querySelectorAll('.activity-carousel').forEach((carousel) => {
+      const track = carousel.querySelector('.carousel-track');
+      if (!track) return;
+      // Avoid cloning twice if initCarousel runs again.
+      if (track.dataset.cloned === '1') return;
+      track.dataset.cloned = '1';
 
-            function sendMail(event) {
-                event.preventDefault();
+      const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+      slides.forEach((slide) => {
+        track.appendChild(slide.cloneNode(true));
+      });
+    });
+  }
 
-                const name    = document.getElementById('name').value;
-                const email   = document.getElementById('email').value;
-                const subject = document.getElementById('subject').value || 'Contact from QMET website';
-                const message = document.getElementById('message').value;
+  /**
+   * Optional: a minimal mailto-based contact submission.
+   * If the contact form uses inline onclick="sendMail(event)", this ensures it works.
+   */
+  function sendMail(event) {
+    if (event && typeof event.preventDefault === 'function') event.preventDefault();
 
-                const to = 'kiwoong@cbnu.ac.kr';
+    const nameEl = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const subjectEl = document.getElementById('subject');
+    const messageEl = document.getElementById('message');
 
-                // 줄바꿈은 그냥 \n으로 쓰고, 나중에 encodeURIComponent에 맡김
-                const bodyText =
-                    'Name: ' + name + '\n' +
-                    'Email: ' + email + '\n\n' +
-                    message;
+    if (!nameEl || !emailEl || !messageEl) return;
 
-                const mailtoLink = 'mailto:' + encodeURIComponent(to)
-                    + '?subject=' + encodeURIComponent(subject)
-                    + '&body=' + encodeURIComponent(bodyText);
+    const name = nameEl.value || '';
+    const email = emailEl.value || '';
+    const subject = (subjectEl && subjectEl.value) || 'Contact from QMET website';
+    const message = messageEl.value || '';
 
-                window.location.href = mailtoLink;
-            }
+    const to = 'kiwoong@cbnu.ac.kr';
+    const bodyText = `Name: ${name}\nEmail: ${email}\n\n${message}`;
 
-            // ====================
-});
+    const mailtoLink =
+      `mailto:${encodeURIComponent(to)}` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(bodyText)}`;
+
+    window.location.href = mailtoLink;
+  }
+
+  window.initCarousel = initCarousel;
+  window.sendMail = sendMail;
+})();

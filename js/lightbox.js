@@ -1,119 +1,119 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // IMAGE GALLERY & LIGHTBOX
-            // ====================
-            (function() {
-                const lightbox = document.getElementById('imageLightbox');
-                const lightboxImage = document.getElementById('lightboxImage');
-                const lightboxCaption = document.getElementById('lightboxCaption');
-                const lightboxCounter = document.getElementById('lightboxCounter');
-                const lightboxClose = document.getElementById('lightboxClose');
-                const lightboxPrev = document.getElementById('lightboxPrev');
-                const lightboxNext = document.getElementById('lightboxNext');
+// lightbox.js
+// Image gallery lightbox (page-safe). Requires specific DOM nodes; becomes a no-op if absent.
 
-                let currentGalleryImages = [];
-                let currentIndex = 0;
+(function () {
+  function initLightbox() {
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
 
-                // Collect all lightbox images
-                function getAllLightboxImages(clickedImg) {
-                    // Find the parent research card
-                    const card = clickedImg.closest('.research-card');
-                    if (card) {
-                        // Get all images within this card's gallery
-                        return Array.from(card.querySelectorAll('[data-lightbox]'));
-                    }
-                    return [clickedImg];
-                }
+    // If this page doesn't have the lightbox markup, exit silently.
+    if (!lightbox || !lightboxImage || !lightboxCaption || !lightboxCounter || !lightboxClose || !lightboxPrev || !lightboxNext) {
+      return;
+    }
 
-                // Open lightbox
-                function openLightbox(img) {
-                    currentGalleryImages = getAllLightboxImages(img);
-                    currentIndex = currentGalleryImages.indexOf(img);
-                    if (currentIndex === -1) currentIndex = 0;
+    // Bind once.
+    if (lightbox.dataset.bound === '1') return;
+    lightbox.dataset.bound = '1';
 
-                    updateLightboxImage();
-                    lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden';
+    let currentGalleryImages = [];
+    let currentIndex = 0;
 
-                    // Show/hide nav buttons based on image count
-                    if (currentGalleryImages.length <= 1) {
-                        lightboxPrev.style.display = 'none';
-                        lightboxNext.style.display = 'none';
-                        lightboxCounter.style.display = 'none';
-                    } else {
-                        lightboxPrev.style.display = 'flex';
-                        lightboxNext.style.display = 'flex';
-                        lightboxCounter.style.display = 'block';
-                    }
-                }
+    function getAllLightboxImages(clickedImg) {
+      const card = clickedImg.closest('.research-card');
+      if (card) return Array.from(card.querySelectorAll('[data-lightbox]'));
+      return [clickedImg];
+    }
 
-                // Close lightbox
-                function closeLightbox() {
-                    lightbox.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
+    function updateLightboxImage() {
+      const img = currentGalleryImages[currentIndex];
+      if (!img) return;
+      lightboxImage.src = img.src;
+      lightboxCaption.textContent = img.alt || '';
+      lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryImages.length}`;
+    }
 
-                // Update lightbox image
-                function updateLightboxImage() {
-                    const img = currentGalleryImages[currentIndex];
-                    lightboxImage.src = img.src;
-                    lightboxCaption.textContent = img.alt || '';
-                    lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryImages.length}`;
-                }
+    function setNavVisibility() {
+      const many = currentGalleryImages.length > 1;
+      lightboxPrev.style.display = many ? 'flex' : 'none';
+      lightboxNext.style.display = many ? 'flex' : 'none';
+      lightboxCounter.style.display = many ? 'block' : 'none';
+    }
 
-                // Navigate
-                function navigate(direction) {
-                    currentIndex += direction;
-                    if (currentIndex < 0) currentIndex = currentGalleryImages.length - 1;
-                    if (currentIndex >= currentGalleryImages.length) currentIndex = 0;
-                    updateLightboxImage();
-                }
+    function openLightbox(img) {
+      currentGalleryImages = getAllLightboxImages(img);
+      currentIndex = currentGalleryImages.indexOf(img);
+      if (currentIndex === -1) currentIndex = 0;
+      updateLightboxImage();
+      setNavVisibility();
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-                // Event listeners for lightbox images
-                document.querySelectorAll('[data-lightbox]').forEach(img => {
-                    img.addEventListener('click', () => openLightbox(img));
-                });
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
 
-                // Close button
-                lightboxClose.addEventListener('click', closeLightbox);
+    function navigate(direction) {
+      if (currentGalleryImages.length <= 1) return;
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = currentGalleryImages.length - 1;
+      if (currentIndex >= currentGalleryImages.length) currentIndex = 0;
+      updateLightboxImage();
+    }
 
-                // Navigation buttons
-                lightboxPrev.addEventListener('click', () => navigate(-1));
-                lightboxNext.addEventListener('click', () => navigate(1));
+    // Event delegation for lightbox triggers.
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-lightbox], .gallery-main img');
+      if (!trigger) return;
 
-                // Click outside to close
-                lightbox.addEventListener('click', (e) => {
-                    if (e.target === lightbox) closeLightbox();
-                });
+      // If clicking thumbnail, it should only update the main image (handled below).
+      if (e.target.closest('.gallery-thumbs')) return;
 
-                // Keyboard navigation
-                document.addEventListener('keydown', (e) => {
-                    if (!lightbox.classList.contains('active')) return;
+      openLightbox(trigger);
+    });
 
-                    if (e.key === 'Escape') closeLightbox();
-                    if (e.key === 'ArrowLeft') navigate(-1);
-                    if (e.key === 'ArrowRight') navigate(1);
-                });
+    // Close button
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', () => navigate(-1));
+    lightboxNext.addEventListener('click', () => navigate(1));
 
-                // Thumbnail click to change main image
-                document.querySelectorAll('.gallery-thumbs img').forEach(thumb => {
-                    thumb.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const gallery = this.closest('.research-card-gallery');
-                        const mainImg = gallery.querySelector('.gallery-main img');
+    // Click outside to close
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
 
-                        // Update main image
-                        mainImg.src = this.src;
-                        mainImg.alt = this.alt;
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
 
-                        // Update active state
-                        gallery.querySelectorAll('.gallery-thumbs img').forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-                    });
-                });
+    // Thumbnail click to change main image
+    document.addEventListener('click', (e) => {
+      const thumb = e.target.closest('.gallery-thumbs img');
+      if (!thumb) return;
+      e.stopPropagation();
 
-                // Double-click on main image to open lightbox
-                document.querySelectorAll('.gallery-main img').forEach(img => {
-                    img.addEventListener('click', () => openLightbox(img));
-                });
-            })();
-});
+      const gallery = thumb.closest('.research-card-gallery');
+      if (!gallery) return;
+      const mainImg = gallery.querySelector('.gallery-main img');
+      if (!mainImg) return;
+
+      mainImg.src = thumb.src;
+      mainImg.alt = thumb.alt;
+
+      gallery.querySelectorAll('.gallery-thumbs img').forEach((t) => t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
+  }
+
+  window.initLightbox = initLightbox;
+})();
