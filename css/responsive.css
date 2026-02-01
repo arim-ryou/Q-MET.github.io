@@ -1,0 +1,173 @@
+@media (max-width: 768px) {
+            .professor-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .professor-photo {
+                width: 160px;
+                height: 160px;
+            }
+
+            .professor-header-text .overlay-subtitle {
+                max-width: 100%;
+            }
+        }
+
+@media (max-width: 768px) {
+            .carousel-slide {
+                flex: 0 0 calc(50% - 0.5rem);
+                min-width: calc(50% - 0.5rem);
+            }
+
+            .carousel-slide img {
+                height: 150px;
+            }
+        }
+
+@media (max-width: 480px) {
+            .carousel-slide {
+                flex: 0 0 100%;
+                min-width: 100%;
+            }
+        }
+
+@media (max-width: 768px) {
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .lightbox-prev {
+                left: 0.75rem;
+            }
+            
+            .lightbox-next {
+                right: 0.75rem;
+            }
+            
+            .gallery-thumbs img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+@media (max-width: 1024px) {
+            header {
+                padding: 1.5rem 2rem;
+            }
+
+            nav {
+                display: flex;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: var(--color-bg);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                padding: 2rem;
+                z-index: 99;
+                
+                /* 부드러운 애니메이션 */
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            }
+
+            nav.mobile-open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            nav a, nav button {
+                padding: 0.75rem 0;
+                font-size: 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 0 2rem;
+            }
+
+            .hero-video {
+                display: none;
+            }
+
+            .intro {
+                grid-template-columns: 1fr;
+                padding: 6rem 2rem;
+            }
+
+            .values {
+                padding: 6rem 2rem;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            footer {
+                padding: 4rem 2rem 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            /* Overlay Responsive */
+            .overlay-close {
+                right: 2rem;
+                top: 1.5rem;
+            }
+
+            .overlay-content {
+                padding: 6rem 2rem 3rem;
+            }
+
+            .overlay-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .contact-form {
+                order: -1;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .research-areas {
+                grid-template-columns: 1fr;
+            }
+        }
+
+@media (max-width: 640px) {
+            .hero-title {
+                font-size: clamp(2rem, 10vw, 5rem);
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+
+            .overlay-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+        }
