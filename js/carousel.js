@@ -1,6 +1,4 @@
-// waits for overlay partials to be injected
-(function () {
-  const init = () => {
+document.addEventListener('DOMContentLoaded', () => {
     // Carousel - Clone slides for infinite loop
             document.querySelectorAll('.activity-carousel').forEach(carousel => {
                 const track = carousel.querySelector('.carousel-track');
@@ -37,8 +35,4 @@
             }
 
             // ====================
-  };
-
-  if (window.__partialsLoaded) init();
-  else document.addEventListener('partials:loaded', init, { once: true });
-})();
+});

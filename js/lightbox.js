@@ -1,6 +1,4 @@
-// waits for overlay partials to be injected
-(function () {
-  const init = () => {
+document.addEventListener('DOMContentLoaded', () => {
     // IMAGE GALLERY & LIGHTBOX
             // ====================
             (function() {
@@ -118,8 +116,4 @@
                     img.addEventListener('click', () => openLightbox(img));
                 });
             })();
-  };
-
-  if (window.__partialsLoaded) init();
-  else document.addEventListener('partials:loaded', init, { once: true });
-})();
+});

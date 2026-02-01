@@ -1,6 +1,4 @@
-// waits for overlay partials to be injected
-(function () {
-  const init = () => {
+document.addEventListener('DOMContentLoaded', () => {
     // News Card Click Handler
             document.querySelectorAll('.activity-card.has-news').forEach(card => {
                 card.addEventListener('click', (e) => {
@@ -14,8 +12,4 @@
                     }
                 });
             });
-  };
-
-  if (window.__partialsLoaded) init();
-  else document.addEventListener('partials:loaded', init, { once: true });
-})();
+});

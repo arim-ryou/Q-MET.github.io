@@ -1,19 +1,42 @@
-<div class="overlay" id="teamOverlay">
-<button class="overlay-close" data-close="teamOverlay">
-<svg fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 14 14">
-<line x1="1" x2="13" y1="1" y2="13"></line>
-<line x1="13" x2="1" y1="1" y2="13"></line>
-</svg>
-            Close
-        </button>
-<div class="overlay-content">
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>QMET – Team</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="css/variables.css" rel="stylesheet"/>
+<link href="css/base.css" rel="stylesheet"/>
+<link href="css/layout.css" rel="stylesheet"/>
+<link href="css/components.css" rel="stylesheet"/>
+<link href="css/overlay.css" rel="stylesheet"/>
+<link href="css/lightbox.css" rel="stylesheet"/>
+<link href="css/animations.css" rel="stylesheet"/>
+<link href="css/responsive.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="grain"></div>
+<header>
+<a class="logo" href="index.html">QMET</a>
+<nav>
+<a href="about.html">About</a>
+<a href="professor.html">Professor</a>
+<a href="team.html">Team</a>
+<a href="publications.html">Publication</a>
+<a href="activity.html">Activity</a>
+</nav>
+</header>
+<main id="page-root" style="padding: 8rem 3rem 4rem; max-width: 1200px; margin: 0 auto;">
 <div class="overlay-header">
 <h1 class="overlay-title">Our <em>Team</em></h1>
 <p class="overlay-subtitle">
                     Meet the researchers and students driving innovation in quantum science.
                 </p>
 </div>
-<!-- Current Members -->
+ Current Members 
 <div class="team-section">
 <h2 class="team-section-title">Current Members</h2>
 <div class="team-grid">
@@ -68,7 +91,7 @@
 </div>
 </div>
 </div>
-<!-- Alumni Section -->
+ Alumni Section 
 <div class="team-section alumni-section">
 <h2 class="team-section-title">Alumni</h2>
 <div class="team-grid">
@@ -81,5 +104,14 @@
 <!-- 필요한 만큼 추가 -->
 </div>
 </div>
-</div>
-</div>
+</main>
+
+
+<script src="js/menu.js"></script>
+<!-- Optional: if you want overlay open/close behaviors on this page too -->
+<script src="js/overlay.js"></script>
+<script src="js/news.js"></script>
+<script src="js/carousel.js"></script>
+<script src="js/lightbox.js"></script>
+</body>
+</html>
